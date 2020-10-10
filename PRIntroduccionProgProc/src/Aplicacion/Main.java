@@ -8,11 +8,10 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args){
 
-		int opcion;
-		BufferedReader br = new BufferedReader(new
-		        InputStreamReader(System.in));
+		int opcion = 0;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Scanner scanner = new Scanner(System.in);
 		String nombreCarpeta;
 		String nombreRuta;
@@ -20,43 +19,103 @@ public class Main {
 		
 		do {
 			
-			opcion = scanner.nextInt();
+			Controller.imprimirMenu();
+			
+			try {
+				opcion = scanner.nextInt();
+			} catch (Exception e) {
+				scanner.nextInt();
+			}
+			
+			System.out.println();
 			
 			switch (opcion){
 			case 1:
 				System.out.println("-- CREAR CARPETA --");
+				System.out.println();
 				System.out.print("Ruta de la carpeta: ");
-				nombreRuta = br.readLine();
+				try {
+					nombreRuta = br.readLine();
+				} catch (IOException e) {
+					System.out.println("Por favor, introduzca carácteres válidos.");
+					break;
+				}
 				System.out.print("Nombre de la carpeta: ");
-				nombreCarpeta = br.readLine();
+				try {
+					nombreCarpeta = br.readLine();
+				} catch (IOException e) {
+					System.out.println("Por favor, introduzca carácteres válidos.");
+					break;
+				}
 				nombreRuta = nombreRuta.replace("/", File.separator);
 				Controller.crearCarpeta(nombreRuta, nombreCarpeta);
 				break;
 			case 2:
 				System.out.println("-- CREAR FICHERO --");
+				System.out.println();
 				System.out.print("Ruta del fichero: ");
-				nombreRuta = br.readLine();
+				try {
+					nombreRuta = br.readLine();
+				} catch (IOException e) {
+					System.out.println("Por favor, introduzca carácteres válidos.");
+					break;
+				}
 				System.out.print("Nombre del fichero: ");
-				nombreCarpeta = br.readLine();
+				try {
+					nombreCarpeta = br.readLine();
+				} catch (IOException e) {
+					System.out.println("Por favor, introduzca carácteres válidos.");
+					break;
+				}
 				nombreRuta = nombreRuta.replace("/", File.separator);
 				Controller.crearFichero(nombreRuta, nombreCarpeta);
 				break;
 			case 3:
 				System.out.println("-- LISTA DE INTERFACES --");
+				System.out.println();
 				Controller.listarInterfaces();
 				break;
 			case 4:
 				System.out.println("-- IP DE INTERFAZ --");
+				System.out.println();
 				System.out.print("Nombre de la interfaz: ");
-				interfaz = br.readLine();
+				try {
+					interfaz = br.readLine();
+				} catch (IOException e) {
+					System.out.println("Por favor, introduzca carácteres válidos.");
+					break;
+				}
 				Controller.IPInterfaz(interfaz);
 				break;
-			case 9:
-				System.out.println("adeu amadeu");
+			case 5:
+				System.out.println("-- MAC DE INTERFAZ --");
+				System.out.println();
+				System.out.print("Nombre de la interfaz: ");
+				try {
+					interfaz = br.readLine();
+				} catch (IOException e) {
+					System.out.println("Por favor, introduzca carácteres válidos.");
+					break;
+				}
+				Controller.MACInterfaz(interfaz);
+				break;
+			case 6:
+				System.out.println("-- COMPROBAR CONEXIÓN A INTERNET --");
+				System.out.println();
+				if (Controller.conexionInternet()) 
+					System.out.println("Se ha establecido conexión con 8.8.8.8");
+				else System.out.println("No se ha podido establecer conexión con 8.8.8.8");
+				break;
+			case 7:
+				System.out.println("Bye!");
+				break;
+			default:
+				System.out.println("Por favor, introduzca una opción válida [1-7]");
 				break;
 			}
 			
-		} while (opcion != 9);
+			System.out.println();
+		} while (opcion != 7);
 
 		scanner.close();
 		

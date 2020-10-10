@@ -10,6 +10,9 @@ public class Controller {
 	
 	static ProcessBuilder pB = new ProcessBuilder();
 	static String IPv4[];
+	static String mac[];
+	static String paquetes[];
+	static boolean conexion = false;
 	
 	/**
 	 * Al pasarle una ruta del sistema de archivos del equipo, crea
@@ -24,7 +27,6 @@ public class Controller {
 		String comando = "mkdir " + ruta + nombre;
 		pB.command("cmd.exe", "/c", comando);
 		try {
-			System.out.println(comando);
 			pB.start();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -92,8 +94,7 @@ public class Controller {
 			
 			while ((linea = lector.readLine()) != null) {
 				if (linea.contains(interfaz)){
-					linea = linea.substring(0, linea.length() - 1);
-					buffer.append(linea + ": ");
+					buffer.append(linea + " ");
 					entrar = true;
 				}
 				if (entrar && linea.contains("IPv4")) {
@@ -111,6 +112,79 @@ public class Controller {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void MACInterfaz(String interfaz) {
+		try {
+			pB.command("cmd.exe", "/c", "ipconfig /all");
+			Process proceso = pB.start();
+			StringBuilder buffer = new StringBuilder();
+			BufferedReader lector = new BufferedReader(
+					new InputStreamReader(proceso.getInputStream(),
+							Charset.forName("CP850")));
+			String linea;
+			boolean entrar = false;
+			
+			while ((linea = lector.readLine()) != null) {
+				if (linea.contains(interfaz) && !linea.contains("Descripción")){
+					buffer.append(linea + " ");
+					entrar = true;
+				}
+				if (entrar && linea.contains("Dirección física")) {
+					mac = linea.split(": ");
+					buffer.append(mac[1] + "\n");
+					entrar = false;
+				}
+			}
+
+			if (proceso.waitFor() == 0) {
+				System.out.println(buffer);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static boolean conexionInternet() {
+		
+		String comando = "ping 8.8.8.8 -n 1";
+		pB.command("cmd.exe", "/c", comando);
+		try {
+			Process proceso = pB.start();
+			BufferedReader lector = new BufferedReader(
+					new InputStreamReader(proceso.getInputStream(),
+							Charset.forName("CP850")));
+			String linea;
+			
+			while ((linea = lector.readLine()) != null) {
+				if (linea.contains("Paquetes")){
+					paquetes = linea.split(",");
+					if (paquetes[2].contains("0")) {
+						conexion = true;
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return conexion;
+	}
+	
+	public static void imprimirMenu() {
+		System.out.println("-- MENÚ PRINCIPAL --");
+		System.out.println();
+		System.out.println(" 1 · Crear carpeta.");
+		System.out.println(" 2 · Crear fichero.");
+		System.out.println(" 3 · Mostrar interfaces de red.");
+		System.out.println(" 4 · Mostrar IP de interfaz de red.");
+		System.out.println(" 5 · Mostrar MAC de interfaz de red.");
+		System.out.println(" 6 · Comprobar conexión a Internet.");
+		System.out.println(" 7 · Salir.");
+		System.out.println();
+		System.out.print("Opción: ");
 	}
 	
 }
