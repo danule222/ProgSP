@@ -12,7 +12,7 @@ public class Controller {
 	static String IPv4[];
 	static String mac[];
 	static String paquetes[];
-	static boolean conexion = false;
+	static boolean conexion;
 	
 	/**
 	 * Al pasarle una ruta del sistema de archivos del equipo, crea
@@ -53,6 +53,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Filtra el nombre de las interfaces devueltas por el sistema
+	 * y las imprime en pantalla.
+	 */
 	public static void listarInterfaces() {
 		try {
 			pB.command("cmd.exe", "/c", "ipconfig");
@@ -81,6 +85,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Filtra las interfaces de red con el nombre introducido y muestra
+	 * su dirección IPv4 si esta está disponible.
+	 * @param interfaz Nombre de la interfaz cuya IP queremos ver.
+	 */
 	public static void IPInterfaz(String interfaz) {
 		try {
 			pB.command("cmd.exe", "/c", "ipconfig");
@@ -114,6 +123,11 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Filtra las interfaces de red con el nombre introducido y muestra
+	 * su dirección física (MAC) si esta está disponible.
+	 * @param interfaz Nombre de la interfaz cuya MAC queremos ver.
+	 */
 	public static void MACInterfaz(String interfaz) {
 		try {
 			pB.command("cmd.exe", "/c", "ipconfig /all");
@@ -147,8 +161,15 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Comprueba que el sistema tiene conexión a Internet
+	 * @return El valor devuelto será verdadero si se ha conseguido
+	 * establecer conexión con Internet. Si no ha sido posible, el valor
+	 * devuelto será falso.
+	 */
 	public static boolean conexionInternet() {
 		
+		conexion = false;
 		String comando = "ping 8.8.8.8 -n 1";
 		pB.command("cmd.exe", "/c", comando);
 		try {
@@ -159,11 +180,22 @@ public class Controller {
 			String linea;
 			
 			while ((linea = lector.readLine()) != null) {
-				if (linea.contains("Paquetes")){
+				/*
+				 * Debido a que Windows cambió su forma de responder a paquetes
+				 * perdidos, recibiendo respuesta desde localhost y haciendo que
+				 * muestro 0% de paquetes perdidos, el método comentado
+				 * a continuación no es fiable.
+				 */
+				
+				/*if (linea.contains("Paquetes")){
 					paquetes = linea.split(",");
 					if (paquetes[2].contains("0")) {
 						conexion = true;
 					}
+				}*/
+				
+				if (linea.contains("Tiempos aproximados")){
+					conexion = true;
 				}
 			}
 		} catch (IOException e) {
@@ -173,6 +205,9 @@ public class Controller {
 		return conexion;
 	}
 	
+	/**
+	 * Imprime el menú principal de la aplicación por pantalla.
+	 */
 	public static void imprimirMenu() {
 		System.out.println("-- MENÚ PRINCIPAL --");
 		System.out.println();
