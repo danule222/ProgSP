@@ -66,7 +66,6 @@ public class Controller {
 			String comando = "echo > " + ruta + nombre;
 			pB.command("cmd.exe", "/c", comando);
 			try {
-				System.out.println(comando);
 				pB.start();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -78,7 +77,6 @@ public class Controller {
 			String comando = "echo > " + ruta + nombre;
 			pB.command("bash", "-c", comando);
 			try {
-				System.out.println(comando);
 				pB.start();
 			} catch (IOException e) {
 				e.printStackTrace();
