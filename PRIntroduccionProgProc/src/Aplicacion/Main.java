@@ -30,7 +30,7 @@ public class Main {
 			System.out.println();
 			
 			switch (opcion){
-			/* CREACIÓN DE CARPETA */
+			/* CREACIÃ“N DE CARPETA */
 			case 1:
 				System.out.println("-- CREAR CARPETA --");
 				System.out.println();
@@ -38,20 +38,20 @@ public class Main {
 				try {
 					nombreRuta = br.readLine();
 				} catch (IOException e) {
-					System.out.println("Por favor, introduzca carácteres válidos.");
+					System.out.println("Por favor, introduzca carÃ¡cteres vÃ¡lidos.");
 					break;
 				}
 				System.out.print("Nombre de la carpeta: ");
 				try {
 					nombreCarpeta = br.readLine();
 				} catch (IOException e) {
-					System.out.println("Por favor, introduzca carácteres válidos.");
+					System.out.println("Por favor, introduzca carÃ¡cteres vÃ¡lidos.");
 					break;
 				}
 				nombreRuta = nombreRuta.replace("/", File.separator);
 				Controller.crearCarpeta(nombreRuta, nombreCarpeta);
 				break;
-			/* CREACIÓN DE FICHERO */
+			/* CREACIÃ“N DE FICHERO */
 			case 2:
 				System.out.println("-- CREAR FICHERO --");
 				System.out.println();
@@ -59,14 +59,14 @@ public class Main {
 				try {
 					nombreRuta = br.readLine();
 				} catch (IOException e) {
-					System.out.println("Por favor, introduzca carácteres válidos.");
+					System.out.println("Por favor, introduzca carÃ¡cteres vÃ¡lidos.");
 					break;
 				}
 				System.out.print("Nombre del fichero: ");
 				try {
 					nombreCarpeta = br.readLine();
 				} catch (IOException e) {
-					System.out.println("Por favor, introduzca carácteres válidos.");
+					System.out.println("Por favor, introduzca carÃ¡cteres vÃ¡lidos.");
 					break;
 				}
 				nombreRuta = nombreRuta.replace("/", File.separator);
@@ -86,7 +86,7 @@ public class Main {
 				try {
 					interfaz = br.readLine();
 				} catch (IOException e) {
-					System.out.println("Por favor, introduzca carácteres válidos.");
+					System.out.println("Por favor, introduzca carÃ¡cteres vÃ¡lidos.");
 					break;
 				}
 				Controller.IPInterfaz(interfaz);
@@ -99,26 +99,26 @@ public class Main {
 				try {
 					interfaz = br.readLine();
 				} catch (IOException e) {
-					System.out.println("Por favor, introduzca carácteres válidos.");
+					System.out.println("Por favor, introduzca carÃ¡cteres vÃ¡lidos.");
 					break;
 				}
 				Controller.MACInterfaz(interfaz);
 				break;
-			/* COMPROBAR CONEXIÓN A INTERNET */
+			/* COMPROBAR CONEXIÃ“N A INTERNET */
 			case 6:
-				System.out.println("-- COMPROBAR CONEXIÓN A INTERNET --");
+				System.out.println("-- COMPROBAR CONEXIÃ“N A INTERNET --");
 				System.out.println();
 				if (Controller.conexionInternet()) 
-					System.out.println("Se ha establecido conexión con 8.8.8.8");
-				else System.out.println("No se ha podido establecer conexión con 8.8.8.8");
+					System.out.println("Se ha establecido conexiÃ³n con 8.8.8.8");
+				else System.out.println("No se ha podido establecer conexiÃ³n con 8.8.8.8");
 				break;
-			/* TERMINAR APLICACIÓN */
+			/* TERMINAR APLICACIÃ“N */
 			case 7:
 				System.out.println("Bye!");
 				break;
-			/* EN CASO DE QUE LA OPCIÓN INTRODUCIDA NO SEA VÁLIDA */	
+			/* EN CASO DE QUE LA OPCIÃ“N INTRODUCIDA NO SEA VÃLIDA */	
 			default:
-				System.out.println("Por favor, introduzca una opción válida [1-7]");
+				System.out.println("Por favor, introduzca una opciÃ³n vÃ¡lida [1-7]");
 				break;
 			}
 			

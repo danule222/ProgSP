@@ -17,8 +17,8 @@ public class Controller {
 	/**
 	 * Al pasarle una ruta del sistema de archivos del equipo, crea
 	 * una carpeta con el nombre indicado en la ruta indicada.
-	 * @param ruta Dirección donde se quiere crear la carpeta. Si no se escribe el
-	 * separador de carpeta al final, el método lo detectará y lo escribirá automáticamente.
+	 * @param ruta DirecciÃ³n donde se quiere crear la carpeta. Si no se escribe el
+	 * separador de carpeta al final, el mÃ©todo lo detectarÃ¡ y lo escribirÃ¡ automÃ¡ticamente.
 	 * @param nombre Nombre de la carpeta que se quiere crear.
 	 */
 	public static void crearCarpeta(String ruta, String nombre) {
@@ -36,8 +36,8 @@ public class Controller {
 	/**
 	 * Al pasarle una ruta del sistema de archivos del equipo, crea
 	 * un fichero con el nombre indicado en la ruta indicada.
-	 * @param ruta Dirección donde se quiere crear el fichero. Si no se escribe el
-	 * separador de carpeta al final, el método lo detectará y lo escribirá automáticamente.
+	 * @param ruta DirecciÃ³n donde se quiere crear el fichero. Si no se escribe el
+	 * separador de carpeta al final, el mÃ©todo lo detectarÃ¡ y lo escribirÃ¡ automÃ¡ticamente.
 	 * @param nombre Nombre del fichero que se quiere crear.
 	 */
 	public static void crearFichero(String ruta, String nombre) {
@@ -69,7 +69,7 @@ public class Controller {
 			
 			while ((linea = lector.readLine()) != null) {
 				if (!linea.startsWith(" ") && !linea.isBlank() &&
-						!linea.startsWith("Configuración IP de Windows")){
+						!linea.startsWith("ConfiguraciÃ³n IP de Windows")){
 					linea = linea.substring(0, linea.length() - 1);
 					buffer.append(linea + "\n");
 				}
@@ -87,7 +87,7 @@ public class Controller {
 	
 	/**
 	 * Filtra las interfaces de red con el nombre introducido y muestra
-	 * su dirección IPv4 si esta está disponible.
+	 * su direcciÃ³n IPv4 si esta estÃ¡ disponible.
 	 * @param interfaz Nombre de la interfaz cuya IP queremos ver.
 	 */
 	public static void IPInterfaz(String interfaz) {
@@ -125,7 +125,7 @@ public class Controller {
 	
 	/**
 	 * Filtra las interfaces de red con el nombre introducido y muestra
-	 * su dirección física (MAC) si esta está disponible.
+	 * su direcciÃ³n fÃ­sica (MAC) si esta estÃ¡ disponible.
 	 * @param interfaz Nombre de la interfaz cuya MAC queremos ver.
 	 */
 	public static void MACInterfaz(String interfaz) {
@@ -140,11 +140,11 @@ public class Controller {
 			boolean entrar = false;
 			
 			while ((linea = lector.readLine()) != null) {
-				if (linea.contains(interfaz) && !linea.contains("Descripción")){
+				if (linea.contains(interfaz) && !linea.contains("DescripciÃ³n")){
 					buffer.append(linea + " ");
 					entrar = true;
 				}
-				if (entrar && linea.contains("Dirección física")) {
+				if (entrar && linea.contains("DirecciÃ³n fÃ­sica")) {
 					mac = linea.split(": ");
 					buffer.append(mac[1] + "\n");
 					entrar = false;
@@ -162,10 +162,10 @@ public class Controller {
 	}
 	
 	/**
-	 * Comprueba que el sistema tiene conexión a Internet
-	 * @return El valor devuelto será verdadero si se ha conseguido
-	 * establecer conexión con Internet. Si no ha sido posible, el valor
-	 * devuelto será falso.
+	 * Comprueba que el sistema tiene conexiÃ³n a Internet
+	 * @return El valor devuelto serÃ¡ verdadero si se ha conseguido
+	 * establecer conexiÃ³n con Internet. Si no ha sido posible, el valor
+	 * devuelto serÃ¡ falso.
 	 */
 	public static boolean conexionInternet() {
 		
@@ -181,10 +181,10 @@ public class Controller {
 			
 			while ((linea = lector.readLine()) != null) {
 				/*
-				 * Debido a que Windows cambió su forma de responder a paquetes
+				 * Debido a que Windows cambiÃ³ su forma de responder a paquetes
 				 * perdidos, recibiendo respuesta desde localhost y haciendo que
-				 * muestro 0% de paquetes perdidos, el método comentado
-				 * a continuación no es fiable.
+				 * muestro 0% de paquetes perdidos, el mÃ©todo comentado
+				 * a continuaciÃ³n no es fiable.
 				 */
 				
 				/*if (linea.contains("Paquetes")){
@@ -206,20 +206,20 @@ public class Controller {
 	}
 	
 	/**
-	 * Imprime el menú principal de la aplicación por pantalla.
+	 * Imprime el menÃº principal de la aplicaciÃ³n por pantalla.
 	 */
 	public static void imprimirMenu() {
-		System.out.println("-- MENÚ PRINCIPAL --");
+		System.out.println("-- MENÃš PRINCIPAL --");
 		System.out.println();
-		System.out.println(" 1 · Crear carpeta.");
-		System.out.println(" 2 · Crear fichero.");
-		System.out.println(" 3 · Mostrar interfaces de red.");
-		System.out.println(" 4 · Mostrar IP de interfaz de red.");
-		System.out.println(" 5 · Mostrar MAC de interfaz de red.");
-		System.out.println(" 6 · Comprobar conexión a Internet.");
-		System.out.println(" 7 · Salir.");
+		System.out.println(" 1 Â· Crear carpeta.");
+		System.out.println(" 2 Â· Crear fichero.");
+		System.out.println(" 3 Â· Mostrar interfaces de red.");
+		System.out.println(" 4 Â· Mostrar IP de interfaz de red.");
+		System.out.println(" 5 Â· Mostrar MAC de interfaz de red.");
+		System.out.println(" 6 Â· Comprobar conexiÃ³n a Internet.");
+		System.out.println(" 7 Â· Salir.");
 		System.out.println();
-		System.out.print("Opción: ");
+		System.out.print("OpciÃ³n: ");
 	}
 	
 }
