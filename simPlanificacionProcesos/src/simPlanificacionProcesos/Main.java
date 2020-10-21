@@ -23,6 +23,7 @@ public class Main {
 				o2.getTiempoLlegada()));
 		
 		FIFO.run(listaProcesos);
+		SJF.run(listaProcesos);
 		
 	}
 
