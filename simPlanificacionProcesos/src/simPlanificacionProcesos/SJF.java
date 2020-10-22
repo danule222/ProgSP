@@ -8,7 +8,6 @@ public class SJF {
 	
 	static int lineaTemporal = 0;
 	static int ultimoTiempoLlegada = 0;
-	static int posicion = 0;
 	static int ciclos;
 
 	public static void run(ArrayList<Proceso> listaProcesos) throws InterruptedException{

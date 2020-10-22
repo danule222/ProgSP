@@ -24,6 +24,7 @@ public class Main {
 		
 		FIFO.run(listaProcesos);
 		SJF.run(listaProcesos);
+		SRT.run(listaProcesos);
 		
 	}
 
