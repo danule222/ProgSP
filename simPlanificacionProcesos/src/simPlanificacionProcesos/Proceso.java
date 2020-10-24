@@ -6,14 +6,16 @@ public class Proceso {
 	private int tiempoLlegada;
 	private int tiempoEjecucion;
 	private boolean terminado;
+	private int tiempoEnCola;
 	
 	public Proceso(char letraProceso, int tiempoLlegada, int tiempoEjecucion) {
 		this.letraProceso = letraProceso;
 		this.tiempoLlegada = tiempoLlegada;
 		this.tiempoEjecucion = tiempoEjecucion;
 		terminado = false;
+		tiempoEnCola = 0;
 	}
-	
+
 	public char getLetraProceso() {
 		return letraProceso;
 	}
@@ -44,6 +46,14 @@ public class Proceso {
 	
 	public void setTerminado(boolean terminado) {
 		this.terminado = terminado;
+	}
+	
+	public int getTiempoEnCola() {
+		return tiempoEnCola;
+	}
+
+	public void setPlus1TiempoEnCola() {
+		tiempoEnCola++;
 	}
 	
 }

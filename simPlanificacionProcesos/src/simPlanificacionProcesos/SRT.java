@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class SRT {
 	
 	static ArrayList<Integer> cola = new ArrayList<Integer>();
-	static ArrayList<Proceso> listaProcesosImportada = new ArrayList<Proceso>();
 	
 	static int lineaTemporal = 0;
 	static int ultimoTiempoLlegada = 0;
@@ -15,24 +14,23 @@ public class SRT {
 
 	public static void run(ArrayList<Proceso> listaProcesos) 
 			throws InterruptedException{
-		listaProcesosImportada = listaProcesos;
 		System.out.println("- SRT -");
 		int h = 0;
 		cola.add(0);
-		for (Proceso proceso : listaProcesosImportada) {
+		for (Proceso proceso : listaProcesos) {
 			ciclos += proceso.getTiempoEjecucion();
 		}
 		
 		for (int i = 0; i < ciclos; i++) {
 			
-			System.out.print("Proceso " + listaProcesosImportada.get(cola.get(0)).getLetraProceso() +
-					" - Tiempo restante: " + (listaProcesosImportada.get(cola.get(0)).getTiempoEjecucion() - 1));
-			tiempoEjecucion = listaProcesosImportada.get(cola.get(0)).getTiempoEjecucion();
-			listaProcesosImportada.get(cola.get(0)).setTiempoEjecucion(tiempoEjecucion - 1);
+			System.out.print("Proceso " + listaProcesos.get(cola.get(0)).getLetraProceso() +
+					" - Tiempo restante: " + (listaProcesos.get(cola.get(0)).getTiempoEjecucion() - 1));
+			tiempoEjecucion = listaProcesos.get(cola.get(0)).getTiempoEjecucion();
+			listaProcesos.get(cola.get(0)).setTiempoEjecucion(tiempoEjecucion - 1);
 			
-			if (listaProcesosImportada.get(cola.get(0)).getTiempoEjecucion() == 0) {
+			if (listaProcesos.get(cola.get(0)).getTiempoEjecucion() == 0) {
 				System.out.print(" - Finalizado");
-				listaProcesosImportada.get(cola.get(0)).setTerminado(true);
+				listaProcesos.get(cola.get(0)).setTerminado(true);
 			}
 			System.out.println();
 			Thread.sleep(500);
@@ -41,7 +39,7 @@ public class SRT {
 			ultimoElementeCola = cola.get(0);
 			cola.clear();
 			h = 0;
-			for (Proceso proceso : listaProcesosImportada) {
+			for (Proceso proceso : listaProcesos) {
 				if (!proceso.getTerminado()) {
 					if (proceso.getTiempoLlegada() <= lineaTemporal) {
 						if (proceso.getTiempoEjecucion() <= tiempoEjecucion) {

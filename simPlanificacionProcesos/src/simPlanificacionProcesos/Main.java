@@ -22,9 +22,10 @@ public class Main {
 		listaProcesos.sort((o1, o2) -> Integer.compare(o1.getTiempoLlegada(),
 				o2.getTiempoLlegada()));
 		
-		FIFO.run(listaProcesos);
-		SJF.run(listaProcesos);
-		SRT.run(listaProcesos);
+		//FIFO.run(listaProcesos);
+		//SJF.run(listaProcesos);
+		//SRT.run(listaProcesos);
+		RR.run(listaProcesos, 4);
 		
 	}
 
