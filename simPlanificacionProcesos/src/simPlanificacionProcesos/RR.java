@@ -11,9 +11,9 @@ public class RR {
 	static int tiempoEjecucion = 0;
 	static int ultimoElementoCola = 0;
 	static int tiempoRestante = 0;
-	static int ultimoTiempoEnCola = 0;
+	static int ultimaPosicion = 0;
 	
-	public static void run(ArrayList<Proceso> listaProcesos, int quantum) {
+	public static void run(ArrayList<Proceso> listaProcesos, int quantum) throws InterruptedException {
 		System.out.println("- RR Q=" + quantum + " -");
 		int h = 0;
 		cola.add(0);
@@ -24,22 +24,26 @@ public class RR {
 		
 		do {
 			for (int j = 0; j < quantum; j++) {
-				System.out.print(listaProcesos.get(cola.get(0)).getLetraProceso());
+				System.out.print("Proceso " + listaProcesos.get(cola.get(0)).getLetraProceso() +
+						" - Tiempo restante: " + (listaProcesos.get(cola.get(0)).getTiempoEjecucion() - 1));
 				tiempoEjecucion = listaProcesos.get(cola.get(0)).getTiempoEjecucion();
 				listaProcesos.get(cola.get(0)).setTiempoEjecucion(tiempoEjecucion - 1);
 				lineaTemporal++;
+				listaProcesos.get(cola.get(0)).setUltimaPosicion(lineaTemporal);
 				
 				if (listaProcesos.get(cola.get(0)).getTiempoEjecucion() == 0) {
 					System.out.print(" - Finalizado");
 					listaProcesos.get(cola.get(0)).setTerminado(true);
 					System.out.println();
+					Thread.sleep(500);
 					break;
 				}
 				System.out.println();
-				//Thread.sleep(500);
+				Thread.sleep(500);
 			}
 			
 			ultimoElementoCola = cola.get(0);
+			ultimaPosicion = listaProcesos.get(cola.get(0)).getUltimaPosicion();
 			cola.clear();
 			h = 0;
 			
@@ -47,12 +51,14 @@ public class RR {
 				if (!proceso.getTerminado() && 
 						proceso != listaProcesos.get(ultimoElementoCola) &&
 						proceso.getTiempoLlegada() <= lineaTemporal) {
-					cola.add(h);
-					break;
+						if (proceso.getUltimaPosicion() < ultimaPosicion) {
+							cola.add(0, h);
+							ultimaPosicion = proceso.getUltimaPosicion();
+						}
 				}
 				h++;
 			}
-				
+			if (cola.isEmpty()) cola.add(ultimoElementoCola);
 		} while (lineaTemporal < ciclos);
 		
 	}

@@ -6,14 +6,14 @@ public class Proceso {
 	private int tiempoLlegada;
 	private int tiempoEjecucion;
 	private boolean terminado;
-	private int tiempoEnCola;
-	
+	private int ultimaPosicion;
+
 	public Proceso(char letraProceso, int tiempoLlegada, int tiempoEjecucion) {
 		this.letraProceso = letraProceso;
 		this.tiempoLlegada = tiempoLlegada;
 		this.tiempoEjecucion = tiempoEjecucion;
 		terminado = false;
-		tiempoEnCola = 0;
+		ultimaPosicion = this.tiempoLlegada;
 	}
 
 	public char getLetraProceso() {
@@ -48,12 +48,12 @@ public class Proceso {
 		this.terminado = terminado;
 	}
 	
-	public int getTiempoEnCola() {
-		return tiempoEnCola;
+	public int getUltimaPosicion() {
+		return ultimaPosicion;
 	}
 
-	public void setPlus1TiempoEnCola() {
-		tiempoEnCola++;
+	public void setUltimaPosicion(int ultimaPosicion) {
+		this.ultimaPosicion = ultimaPosicion;
 	}
 	
 }
