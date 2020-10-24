@@ -1,32 +1,46 @@
 package simPlanificacionProcesos;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		
-		Proceso A = new Proceso('A',0,3);
-		Proceso B = new Proceso('B',2,6);
-		Proceso C = new Proceso('C',4,4);
-		Proceso D = new Proceso('D',6,5);
-		Proceso E = new Proceso('E',8,2);
+		Scanner scanner = new Scanner(System.in);
+		int quantum = 1;
 		
-		ArrayList<Proceso> listaProcesos = new ArrayList<Proceso>();
-		listaProcesos.add(A);
-		listaProcesos.add(B);
-		listaProcesos.add(C);
-		listaProcesos.add(D);
-		listaProcesos.add(E);
+		ArrayList<Proceso> listaProcesos = Controller.leerProcesos();
 		
-		listaProcesos.sort((o1, o2) -> Integer.compare(o1.getTiempoLlegada(),
-				o2.getTiempoLlegada()));
-		
-		//FIFO.run(listaProcesos);
-		//SJF.run(listaProcesos);
-		//SRT.run(listaProcesos);
-		RR.run(listaProcesos, 4);
-		
+		do {
+			switch (Controller.imprimirMenu()) {
+			case 1:
+				FIFO.run(listaProcesos);
+				break;
+			case 2:
+				SJF.run(listaProcesos);
+				break;
+			case 3:
+				SRT.run(listaProcesos);
+				break;
+			case 4:
+				System.out.print("Introduza el Quantum a usar: ");
+				quantum = scanner.nextInt();
+				System.out.println();
+				RR.run(listaProcesos, quantum);
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
+			default:
+					System.out.println("Por favor, introduzca una opción válida [1 - 5]");
+			}
+			System.out.println();
+			listaProcesos = Controller.leerProcesos();
+		} while (Controller.getOpcion() != 6);
+		System.out.println("Bye!");
+		scanner.close();
 	}
 
 }

@@ -2,6 +2,10 @@ package simPlanificacionProcesos;
 
 import java.util.ArrayList;
 
+/**
+ * Simulador de SRT.
+ * @author Daniel Ramírez Morilla
+ */
 public class SRT {
 	
 	static ArrayList<Integer> cola = new ArrayList<Integer>();
@@ -12,6 +16,11 @@ public class SRT {
 	static int tiempoEjecucion = 0;
 	static int ultimoElementeCola = 0;
 
+	/**
+	 * Ejecuta una simulación del algoritmo SRT (SJF Apropiativo).
+	 * @param listaProcesos ArrayList con los procesos que usará el simulador.
+	 * @throws InterruptedException
+	 */
 	public static void run(ArrayList<Proceso> listaProcesos) 
 			throws InterruptedException{
 		System.out.println("- SRT -");

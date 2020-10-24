@@ -2,6 +2,10 @@ package simPlanificacionProcesos;
 
 import java.util.ArrayList;
 
+/**
+ * Simulador de SJF.
+ * @author Daniel Ramírez Morilla
+ */
 public class SJF {
 	
 	static ArrayList<Integer> cola = new ArrayList<Integer>();
@@ -10,6 +14,11 @@ public class SJF {
 	static int ultimoTiempoLlegada = 0;
 	static int ciclos;
 
+	/**
+	 * Ejecuta una simulación del algoritmo SJF (Shortest Job Next).
+	 * @param listaProcesos ArrayList con los procesos que usará el simulador.
+	 * @throws InterruptedException
+	 */
 	public static void run(ArrayList<Proceso> listaProcesos) throws InterruptedException{
 		System.out.println("- SJF -");
 		ciclos = listaProcesos.size();
