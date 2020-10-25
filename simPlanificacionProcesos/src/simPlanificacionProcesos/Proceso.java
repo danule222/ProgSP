@@ -19,6 +19,10 @@ public class Proceso {
 	 */
 	private int tiempoEjecucion;
 	/**
+	 * Tiempo de ejecución leído por Controller.leerProcesos.
+	 */
+	private int tiempoEjecucionOriginal;
+	/**
 	 * <ul>
 	 * <li><b>True:</b> El proceso ha terminado.</li>
 	 * <li><b>False:</b> El proceso no ha terminado.</li>
@@ -41,6 +45,7 @@ public class Proceso {
 		this.letraProceso = letraProceso;
 		this.tiempoLlegada = tiempoLlegada;
 		this.tiempoEjecucion = tiempoEjecucion;
+		tiempoEjecucionOriginal = tiempoEjecucion;
 		terminado = false;
 		ultimaPosicion = this.tiempoLlegada;
 	}
@@ -83,6 +88,10 @@ public class Proceso {
 
 	public void setUltimaPosicion(int ultimaPosicion) {
 		this.ultimaPosicion = ultimaPosicion;
+	}
+	
+	public int getTiempoEjecucionOriginal() {
+		return this.tiempoEjecucionOriginal;
 	}
 	
 }

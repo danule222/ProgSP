@@ -3,8 +3,14 @@ package simPlanificacionProcesos;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Clase principal desde donde se ejecuta la aplicación.
+ */
 public class Main {
 
+	/**
+	 * Método principal desde donde se ejecuta la aplicación.
+	 */
 	public static void main(String[] args) throws InterruptedException {
 		
 		Scanner scanner = new Scanner(System.in);
@@ -39,7 +45,7 @@ public class Main {
 			System.out.println();
 			listaProcesos = Controller.leerProcesos();
 		} while (Controller.getOpcion() != 6);
-		System.out.println("Bye!");
+		System.out.print("Bye!");
 		scanner.close();
 	}
 

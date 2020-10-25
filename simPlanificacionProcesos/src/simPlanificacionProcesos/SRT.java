@@ -11,7 +11,6 @@ public class SRT {
 	static ArrayList<Integer> cola = new ArrayList<Integer>();
 	
 	static int lineaTemporal = 0;
-	static int ultimoTiempoLlegada = 0;
 	static int ciclos = 0;
 	static int tiempoEjecucion = 0;
 	static int ultimoElementeCola = 0;
@@ -26,6 +25,7 @@ public class SRT {
 		System.out.println("- SRT -");
 		int h = 0;
 		cola.add(0);
+		
 		for (Proceso proceso : listaProcesos) {
 			ciclos += proceso.getTiempoEjecucion();
 		}
@@ -41,16 +41,24 @@ public class SRT {
 				System.out.print(" - Finalizado");
 				listaProcesos.get(cola.get(0)).setTerminado(true);
 			}
+			
 			System.out.println();
 			Thread.sleep(500);
 			lineaTemporal++;
+			listaProcesos.get(cola.get(0)).setUltimaPosicion(lineaTemporal);
 			
+			/**
+			 * COLA - ORGANIZA LOS PROCESOS.
+			 */
 			ultimoElementeCola = cola.get(0);
 			cola.clear();
 			h = 0;
 			for (Proceso proceso : listaProcesos) {
+				
 				if (!proceso.getTerminado()) {
+					
 					if (proceso.getTiempoLlegada() <= lineaTemporal) {
+						
 						if (proceso.getTiempoEjecucion() <= tiempoEjecucion) {
 							cola.add(0, h);
 						} else {
@@ -64,7 +72,7 @@ public class SRT {
 				cola.add(ultimoElementeCola);
 			}
 		}
-		
+		IndicePenalizacion.calcularIP(listaProcesos, "SRT");
 	}
 	
 }

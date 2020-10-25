@@ -14,7 +14,6 @@ public class RR {
 	static int ciclos = 0;
 	static int tiempoEjecucion = 0;
 	static int ultimoElementoCola = 0;
-	static int tiempoRestante = 0;
 	static int ultimaPosicion = 0;
 	
 	/**
@@ -25,6 +24,7 @@ public class RR {
 	 */
 	public static void run(ArrayList<Proceso> listaProcesos, int quantum) throws InterruptedException {
 		try {
+			
 			System.out.println("- RR Q=" + quantum + " -");
 			int h = 0;
 			cola.add(0);
@@ -35,13 +35,21 @@ public class RR {
 			
 			do {
 				for (int j = 0; j < quantum; j++) {
+					/*
+					 * IMPRIME POR PANTALLA LA LETRA DEL PROCESO Y EL TIEMPO RESTANTE.
+					 */
 					System.out.print("Proceso " + listaProcesos.get(cola.get(0)).getLetraProceso() +
 							" - Tiempo restante: " + (listaProcesos.get(cola.get(0)).getTiempoEjecucion() - 1));
 					tiempoEjecucion = listaProcesos.get(cola.get(0)).getTiempoEjecucion();
+					/*
+					 * REDUCE EN 1 EL TIEMPO DE EJECUCIÓN DEL PROCESO.
+					 */
 					listaProcesos.get(cola.get(0)).setTiempoEjecucion(tiempoEjecucion - 1);
 					lineaTemporal++;
 					listaProcesos.get(cola.get(0)).setUltimaPosicion(lineaTemporal);
-					
+					/**
+					 * SI EL TIEMPO DE EJECUCIÓN ES 0, ESTE IMPRIMIRÁ QUE HA TERMINADO.
+					 */
 					if (listaProcesos.get(cola.get(0)).getTiempoEjecucion() == 0) {
 						System.out.print(" - Finalizado");
 						listaProcesos.get(cola.get(0)).setTerminado(true);
@@ -53,15 +61,19 @@ public class RR {
 					Thread.sleep(500);
 				}
 				
+				/**
+				 * COLA - ORGANIZA LOS PROCESOS.
+				 */
 				ultimoElementoCola = cola.get(0);
 				ultimaPosicion = listaProcesos.get(cola.get(0)).getUltimaPosicion();
 				cola.clear();
 				h = 0;
-				
 				for (Proceso proceso : listaProcesos) {
+					
 					if (!proceso.getTerminado() && 
 							proceso != listaProcesos.get(ultimoElementoCola) &&
 							proceso.getTiempoLlegada() <= lineaTemporal) {
+						
 							if (proceso.getUltimaPosicion() < ultimaPosicion) {
 								cola.add(0, h);
 								ultimaPosicion = proceso.getUltimaPosicion();
@@ -70,7 +82,11 @@ public class RR {
 					h++;
 				}
 				if (cola.isEmpty()) cola.add(ultimoElementoCola);
+				
 			} while (lineaTemporal < ciclos);
+			
+			IndicePenalizacion.calcularIP(listaProcesos, "RR");
+			
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("\nHay un problema en el listado de procesos.");
 		}
