@@ -1,6 +1,7 @@
 package simPlanificacionProcesos;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -31,9 +32,15 @@ public class Main {
 				break;
 			case 4:
 				System.out.print("Introduza el Quantum a usar: ");
-				quantum = scanner.nextInt();
-				System.out.println();
-				RR.run(listaProcesos, quantum);
+				try {
+					quantum = scanner.nextInt();
+					System.out.println();
+					RR.run(listaProcesos, quantum);
+				} catch (InputMismatchException e) {
+					scanner.nextLine();
+					System.out.println("Por favor, introduzca una opción válida [1 - 5]");
+					break;
+				}
 				break;
 			case 5:
 				break;
