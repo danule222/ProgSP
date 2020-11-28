@@ -4,7 +4,7 @@ import java.util.Random;
 
 /**
  * <img src="{@docRoot}/../imgs/cocinero.png" /><br/>
- * Cocinero encargado de hacer las amburguesas. Si está
+ * Cocinero encargado de hacer las hamburguesas. Si está
  * trabajando y llega un cliente, este esperará en cola hasta
  * que termine lo que esté haciendo.
  * @author Daniel Ramírez Morilla

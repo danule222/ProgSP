@@ -11,8 +11,8 @@ import threads.Supervisor;
  * <img src="{@docRoot}/../imgs/crustaceoCrujiente.png" /><br>
  * Crustáceo Crujiente, casa de la Cangreburguer, hamburguesa estrella
  * de Fondo de Bikini.<br/>
- * El él trabajan tanto cocineros, como supervisores, los cuáles
- * esperan a las comandas de sus queridos clientes.
+ * En él trabajan tanto cocineros, como supervisores, los cuales
+ * esperan las comandas de sus queridos clientes.
  * @author Daniel Ramírez Morilla
  */
 public class Main {
