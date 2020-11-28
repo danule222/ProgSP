@@ -1,5 +1,5 @@
 <div align="center">
-  <img src=".github/readme-images/cabeceraCangreburger.png" />
+  <img src="../.github/readme-images/cabeceraCangreburger.png" />
 </div>
 <h1>Funcionamiento</h1>
 <p>
@@ -17,25 +17,25 @@ Aparte también se añade una media de veces servidas para ver si hay algún
 cliente que se queda atrás y si muere de inanición.
 </p>
 <h1>Clases principales</h1>
-<h2><img src="Cangreburger/imgs/crustaceoCrujiente.png" /> Crustáceo Crujiente</h2>
+<h2><img src="imgs/crustaceoCrujiente.png" /> Crustáceo Crujiente</h2>
 <p>
 Casa de la Cangreburguer, hamburguesa estrella
 de Fondo de Bikini.<br/>
 El él trabajan tanto cocineros, como supervisores, los cuáles
 esperan a las comandas de sus queridos clientes.
 </p>
-<h2><img src="Cangreburger/imgs/cocinero.png" /> Cocinero</h2>
+<h2><img src="imgs/cocinero.png" /> Cocinero</h2>
 <p>
 Cocinero encargado de hacer las amburguesas. Si está
 trabajando y llega un cliente, este esperará en cola hasta
 que termine lo que esté haciendo.
 </p>
-<h2><img src="Cangreburger/imgs/cliente.png" /> Cliente</h2>
+<h2><img src="imgs/cliente.png" /> Cliente</h2>
 <p>
 Animal marino despiadado con la única misión de comer
 y gastar hasta el último centavo en Cangreburgers.
 </p>
-<h2><img src="Cangreburger/imgs/donCangrejo.png" /> Supervisor</h2>
+<h2><img src="imgs/donCangrejo.png" /> Supervisor</h2>
 <p>
 Los mandamases. Encargados de comprobar que cada cocinero está
 trabajando continuamente.
