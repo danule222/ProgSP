@@ -21,12 +21,12 @@ cliente que se queda atrás y si muere de inanición.
 <p>
 Casa de la Cangreburguer, hamburguesa estrella
 de Fondo de Bikini.<br/>
-El él trabajan tanto cocineros, como supervisores, los cuáles
-esperan a las comandas de sus queridos clientes.
+El él trabajan tanto cocineros, como supervisores, los cuales
+esperan las comandas de sus queridos clientes.
 </p>
 <h2><img src="imgs/cocinero.png" /> Cocinero</h2>
 <p>
-Cocinero encargado de hacer las amburguesas. Si está
+Cocinero encargado de hacer las hamburguesas. Si está
 trabajando y llega un cliente, este esperará en cola hasta
 que termine lo que esté haciendo.
 </p>
