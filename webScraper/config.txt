@@ -1,0 +1,3 @@
+Output=datosBolsa.txt
+// Refresco en segundos
+Refresco=60
