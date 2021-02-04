@@ -3,38 +3,53 @@ package cliente;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 import controller.*;
 
+/**
+ * Parte cliente del programa.
+ * @author Daniel Ramírez Morilla
+ */
 public class Cliente {
 
-	public static void main(String[] args) 
+	/**
+	 * Lanza la parte cliente del programa.
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @throws SocketException
+	 */
+	public static void main() 
 			throws UnknownHostException, IOException, SocketException {
 		
-		Scanner scc = new Scanner(System.in);
-		Scanner scc2 = new Scanner(System.in);
-		Controller.unirse(scc.nextLine());
+		System.out.print("Introduzca su nombre: ");
+		String nombre = Controller.sc2.nextLine();
+		System.out.print("IP del host: ");
+		Controller.unirse(Controller.sc2.nextLine());
+		System.out.print("\n");
 		
 		String mensaje = "";
+		String separarNombre[];
 		int opcion;		
 		do {
-			System.out.println("1 - enviar 2 - recibir");
-			opcion = scc.nextInt();
+			System.out.print("1 - Enviar | 2 - Recibir : ");
+			opcion = Controller.sc.nextInt();
+			System.out.print("\n");
 			switch(opcion) {
 			case 1:
-				mensaje = scc2.nextLine();
-				Mensajeria.enviarMensajeCLN(mensaje);
+				System.out.print(nombre + ": ");
+				mensaje = Controller.sc2.nextLine();
+				Mensajeria.enviarMensajeCLN(mensaje, nombre);
+				System.out.print("\n");
 				break;
 			case 2:
-				mensaje = Mensajeria.esperarRespuestaCLN();
+				separarNombre = Mensajeria.esperarRespuestaCLN().split(": ");
+				mensaje = separarNombre[separarNombre.length - 1];
+				System.out.print("\n");
 				break;
 			}
 		} while (!mensaje.equals("Cambio y corto."));
 		
 		Controller.cerrarCliente();
-		scc.close();
-		scc2.close();
 		
 	}
 
