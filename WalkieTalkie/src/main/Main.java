@@ -39,13 +39,16 @@ public class Main {
 				try {
 					Cliente.main();
 				} catch (IOException e) {
-					System.out.println("\nSe ha perdido conexión "
-							+ "con el anfitrión.\n");
 					try {
 						Controller.cerrarCliente();
+						System.out.println("\nSe ha perdido conexión "
+								+ "con el anfitrión.\n");
 					} catch (IOException e1) {
 						System.out.println("Hubo un error fatal.");
 						opcion = 4;
+					} catch (NullPointerException e2) {
+						System.out.println("\nNo se pudo establecer conexión\n"
+								+ "con la dirección de red indicada.\n");
 					}
 				}
 				break;
