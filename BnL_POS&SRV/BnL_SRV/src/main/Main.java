@@ -1,10 +1,16 @@
 package main;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import controllers.Caja;
 import controllers.Cobrar;
+import controllers.Config;
 import controllers.Login;
 import dao.JDBC;
 import models.Empleado;
@@ -14,10 +20,32 @@ import models.Empleado;
  * @author Daniel Ramírez Morilla
  */
 public class Main {
+	
+	/**
+	 * Inicializa todos los componentes
+	 * necesarios para la ejecución del
+	 * programa.
+	 */
+	private static void inicializar() {
+		try {
+			Config.leerConfiguracion();
+			JDBC.establecerConexion();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void main(String[] args) {
+		inicializar();
 		
-		JDBC.establecerConexion();
 		// Prueba Login
 		try {
 			JDBC.setAutocommit(false);
@@ -26,7 +54,7 @@ public class Main {
 			// Prueba cobrar
 			ArrayList<String> listaCompras = new ArrayList<>();
 					// Tienda;Producto;Cantidad
-			listaCompras.add("Cobro;0;0;1");
+			listaCompras.add("Cobro;0;0;3");
 			try {
 				Cobrar.cobro(listaCompras, e.getDNI());
 				JDBC.commit();
@@ -43,7 +71,6 @@ public class Main {
 			e.printStackTrace();
 			System.out.println("Fallo login");
 		}
-		
 	}
 
 }

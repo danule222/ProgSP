@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Clase de acceso a los datos relacionados
@@ -35,7 +37,7 @@ public class FacturaDAO extends AbstractDAO {
 		
 		PreparedStatement ps = con.prepareStatement(sql, 
 				Statement.RETURN_GENERATED_KEYS);
-		ps.setDate(1, Date.valueOf(LocalDate.now()));
+		ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
 		ps.setString(2, DNI_Empleado);
 		ps.executeUpdate();
 		

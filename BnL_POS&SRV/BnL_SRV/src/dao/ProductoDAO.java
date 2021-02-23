@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import controllers.Mail;
+import models.Producto;
 
 /**
  * Clase de acceso a los datos relacionados
@@ -15,6 +16,36 @@ public class ProductoDAO extends AbstractDAO {
 
 	public ProductoDAO() {
 		super();
+	}
+	
+	/**
+	 * Obtiene un objeto Producto a partir
+	 * de su ID.
+	 * @param ID_Producto ID del producto.
+	 * @return Objeto Producto.
+	 * @throws SQLException
+	 */
+	public Producto getProducto(int ID_Producto)
+			throws SQLException {
+		String sql = "SELECT * FROM PRODUCTOS "
+				   + "WHERE ID = ?";
+		
+		Producto p = new Producto();
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, ID_Producto);
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		p.setID(rs.getInt("ID"));
+		p.setNombre(rs.getString("Nombre"));
+		p.setMarca(rs.getString("Marca"));
+		p.setCategoria(rs.getString("Categoria"));
+		p.setDescripcion(rs.getString("Descripcion"));
+		p.setPrecio_Venta(rs.getDouble("Precio_Venta"));
+		p.setPrecio_Proveedor(rs.getDouble("Precio_Proveedor"));
+		
+		return p;
 	}
 	
 	/**
@@ -43,7 +74,7 @@ public class ProductoDAO extends AbstractDAO {
 				   + "AND ID_Almacen = ?";
 		
 		if ((getStock(ID_Tienda, ID_Producto) - cantidad) <= 0) {
-			Mail.faltaStock(ID_Producto);
+			Mail.faltaStock(getProducto(ID_Producto).getNombre());
 			throw new Exception("Falta de Stock en el producto con el ID "
 					+ ID_Producto);
 		} else {

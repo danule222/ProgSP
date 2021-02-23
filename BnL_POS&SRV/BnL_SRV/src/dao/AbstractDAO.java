@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import common.Constant;
+import controllers.Config;
 
 /**
  * Clase abstracta que controla la conexión
@@ -16,19 +16,16 @@ abstract class AbstractDAO {
 	/** Objeto de conexión. */
 	static protected Connection con;
 	
-	/** Establece la conexión con la base de datos. */
-	public static void establecerConexion() {
-		try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            try {
-                con = DriverManager.getConnection
-                		(Constant.CONEXION, Constant.USER, Constant.PASSWORD);
-            } catch (SQLException e) {
-            	e.printStackTrace();
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+	/** Establece la conexión con la base de datos. 
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException */
+	public static void establecerConexion() 
+			throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		con = DriverManager.getConnection
+				(Config.getStringConexion(),
+						Config.getUsuarioBDD(), 
+						Config.getContrasennaBDD());
 	}
 	
 }
