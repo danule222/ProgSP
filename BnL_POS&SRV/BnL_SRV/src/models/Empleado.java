@@ -2,6 +2,10 @@ package models;
 
 import java.sql.Date;
 
+/**
+ * Clase modelo de Empleado.
+ * @author Daniel Ramírez Morilla
+ */
 public class Empleado {
 
 	private String DNI;

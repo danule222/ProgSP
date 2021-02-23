@@ -6,20 +6,23 @@ import java.sql.SQLException;
 
 import common.Constant;
 
-public abstract class AbstractDAO {
+/**
+ * Clase abstracta que controla la conexión
+ * con la base de datos.
+ * @author Daniel Ramírez Morilla
+ */
+abstract class AbstractDAO {
 
-	protected Connection con;
-	public static boolean error = false;
+	/** Objeto de conexión. */
+	static protected Connection con;
 	
-	public AbstractDAO() {
-		EstablecerConexion();
-	}
-	
-	private void EstablecerConexion() {
+	/** Establece la conexión con la base de datos. */
+	public static void establecerConexion() {
 		try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try {
-                this.con = DriverManager.getConnection(Constant.CONEXION, Constant.USER, Constant.PASSWORD);
+                con = DriverManager.getConnection
+                		(Constant.CONEXION, Constant.USER, Constant.PASSWORD);
             } catch (SQLException e) {
             	e.printStackTrace();
             }

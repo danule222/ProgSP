@@ -1,25 +1,41 @@
 package dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import models.Empleado;
 
+/**
+ * Clase de acceso a los datos relacionados
+ * con los empleados.
+ * @author Daniel Ramírez Morilla
+ */
 public class EmpleadoDAO extends AbstractDAO {
 	
 	public EmpleadoDAO() {
 		super();
 	}
 	
+	/**
+	 * Obtiene un objeto Empleado a partir
+	 * de su número privado.
+	 * @param Numero_Privado Número privado del
+	 * empleado.
+	 * @return Objeto Empleado.
+	 * @throws SQLException
+	 */
 	public Empleado getEmpleadoByNumeroPrivado(int Numero_Privado)
 			throws SQLException {
-		Statement st;
+        String sql = "SELECT * from EMPLEADOS "
+        		   + "WHERE Numero_Privado = ?;";
+        
         Empleado e = new Empleado();
-
-        st = this.con.createStatement();
-        ResultSet rs = st.executeQuery("SELECT * from EMPLEADOS WHERE Numero_Privado = "
-        		+ Numero_Privado + ";");
+        
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, Numero_Privado);
+        
+        ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             e.setDNI(rs.getString("DNI"));
             e.setNombre(rs.getString("Nombre"));
