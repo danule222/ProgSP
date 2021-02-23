@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import controllers.Caja;
 import controllers.Cobrar;
 import controllers.Config;
+import controllers.Logger;
 import controllers.Login;
 import dao.JDBC;
 import models.Empleado;
@@ -27,22 +28,24 @@ public class Main {
 	 * programa.
 	 */
 	private static void inicializar() {
+		Logger.log("Iniciando servidor.");
 		try {
 			Config.leerConfiguracion();
 			JDBC.establecerConexion();
+			Logger.log("[I] Conexión a la BDD realizada con éxito.");
 		} catch (SAXException e) {
-			e.printStackTrace();
+			Logger.log("[F] Error al leer App.config.");
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.log("[F] Error al leer App.config.");
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			Logger.log("[F] Error al leer App.config.");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Logger.log("[F] Error al incializar JDBC.");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Logger.log("[F] Error al establecer conexión con la base de datos.");
 		}
 	}
-
+	
 	public static void main(String[] args) {
 		inicializar();
 		
@@ -60,17 +63,21 @@ public class Main {
 				JDBC.commit();
 			} catch (Exception e1) {
 				e1.printStackTrace();
+				Logger.log("[A] Compra cancelada por falta de stock.");
 				JDBC.rollback();
+				Logger.log("[A] Rollback ejecutado con éxito.");
 			}
 			// Probar caja del día
 			System.out.println("Caja del día: " 
 					+ Caja.getCajaDelDia(e.getDNI()));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			Logger.log("[F] Error al convertir número privado "
+					+ "a tipo entero.");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Logger.log("[A] Login incorrecto.");
 			System.out.println("Fallo login");
 		}
+		
 	}
 
 }
