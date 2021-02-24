@@ -37,9 +37,19 @@ public class Login {
 		return e;
 	}
 	
+	/**
+	 * Obtiene la lista de todos los productos.
+	 * @return
+	 * @throws SQLException
+	 */
 	public static ArrayList<Producto> listaProductos()
 			throws SQLException {
 		return pDAO.getListaProductos();
+	}
+	
+	public static void cerrarSesion(String DNI_Empleado)
+			throws SQLException {
+		eDAO.setUltimaSesion(DNI_Empleado);
 	}
 
 }

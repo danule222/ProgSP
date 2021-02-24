@@ -105,6 +105,13 @@ public class Servidor extends Thread {
 				}
 
 		} while (!entrada.equals("Salir"));
+		try {
+			Login.cerrarSesion(e.getDNI());
+			JDBC.commit();
+		} catch (SQLException e1) {
+			Logger.log("[F] No se pudo actualizar la última "
+					+ "sesión del usuario " + e.getDNI() + ".");
+		}
 		Logger.log("[i] Cliente desconectado.");
 	}
 

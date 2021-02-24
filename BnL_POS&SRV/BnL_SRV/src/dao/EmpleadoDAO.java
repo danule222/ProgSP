@@ -3,6 +3,8 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import models.Empleado;
 
@@ -28,7 +30,7 @@ public class EmpleadoDAO extends AbstractDAO {
 	public Empleado getEmpleadoByNumeroPrivado(int Numero_Privado)
 			throws SQLException {
         String sql = "SELECT * from EMPLEADOS "
-        		   + "WHERE Numero_Privado = ?;";
+        		   + "WHERE Numero_Privado = ?";
         
         Empleado e = new Empleado();
         
@@ -50,6 +52,25 @@ public class EmpleadoDAO extends AbstractDAO {
         }
 
         return e;
+	}
+	
+	/**
+	 * Establece la última sesión del usuario con
+	 * el DNI proporcionado a la fecha y hora en
+	 * la que se incova a este método.
+	 * @param DNI_Empleado DNI del empleado.
+	 * @throws SQLException
+	 */
+	public void setUltimaSesion(String DNI_Empleado)
+			throws SQLException {
+		String sql = "UPDATE EMPLEADOS "
+				   + "SET Ultima_Sesion = ? "
+				   + "WHERE DNI = ?";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+        ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+        ps.setString(2, DNI_Empleado);
+        ps.executeUpdate();
 	}
 
 }
