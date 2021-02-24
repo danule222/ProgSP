@@ -5,9 +5,9 @@
   Software para la gestión de stock y compras que se producen en tienda a bordo de la AXIOM. Porque que nuestro planeta se esté muriendo, no nos impide seguir gastando.
 </p>
 
-<center>
+<div align="center">
   <img src="../.github/readme-images/AXIOM.png" />
-</center>
+</div>
 
 <h2>Servidor</h2>
 <h3>Stock</h3>
