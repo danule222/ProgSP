@@ -3,6 +3,7 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import controllers.Mail;
 import models.Producto;
@@ -46,6 +47,29 @@ public class ProductoDAO extends AbstractDAO {
 		p.setPrecio_Proveedor(rs.getDouble("Precio_Proveedor"));
 		
 		return p;
+	}
+	
+	public ArrayList<Producto> getListaProductos()
+			throws SQLException {
+		String sql = "SELECT * FROM PRODUCTOS";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ArrayList<Producto> listaProductos = new ArrayList<>();
+		
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			Producto p = new Producto();
+			p.setID(rs.getInt("ID"));
+			p.setNombre(rs.getString("Nombre"));
+			p.setMarca(rs.getString("Marca"));
+			p.setCategoria(rs.getString("Categoria"));
+			p.setDescripcion(rs.getString("Descripcion"));
+			p.setPrecio_Venta(rs.getDouble("Precio_Venta"));
+			p.setPrecio_Proveedor(rs.getDouble("Precio_Proveedor"));
+			listaProductos.add(p);
+		}
+		
+		return listaProductos;
 	}
 	
 	/**

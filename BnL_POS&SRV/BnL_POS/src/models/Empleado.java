@@ -7,7 +7,7 @@ import java.sql.Date;
  * Clase modelo de Empleado.
  * @author Daniel Ramírez Morilla
  */
-public class Empleado implements Serializable {
+public class Empleado implements Serializable{
 	
 	private static final long serialVersionUID = 952776585L;
 	private String DNI;

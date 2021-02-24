@@ -88,7 +88,8 @@ public class FacturaDAO extends AbstractDAO {
 				   			+ "= PRODUCTOS.ID "
 				   + "WHERE DETALLES_FACTURA.ID_Factura IN (SELECT ID "
 				   										 + "FROM FACTURAS "
-				   										 + "WHERE Fecha_Facturacion = ? "
+				   										 + "WHERE date_format(Fecha_Facturacion,"
+				   										 				   + "'%Y-%m-%d') = ? "
 				   										 + "AND DNI_Empleado = ?)";
 		
 		PreparedStatement ps = con.prepareStatement(sql);

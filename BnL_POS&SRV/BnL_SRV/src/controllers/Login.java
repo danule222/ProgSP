@@ -1,9 +1,12 @@
 package controllers;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import dao.EmpleadoDAO;
+import dao.ProductoDAO;
 import models.Empleado;
+import models.Producto;
 
 /**
  * Controlador del inicio de sesión.
@@ -12,6 +15,7 @@ import models.Empleado;
 public class Login {
 	
 	private static EmpleadoDAO eDAO = new EmpleadoDAO();
+	private static ProductoDAO pDAO = new ProductoDAO();
 	
 	/**
 	 * Si el mensaje contiene el número privado que
@@ -31,6 +35,11 @@ public class Login {
 				(Integer.parseInt(numero[1]));
 		
 		return e;
+	}
+	
+	public static ArrayList<Producto> listaProductos()
+			throws SQLException {
+		return pDAO.getListaProductos();
 	}
 
 }

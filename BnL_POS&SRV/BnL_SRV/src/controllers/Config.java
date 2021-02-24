@@ -77,7 +77,7 @@ public class Config {
 	public static String getStringConexion() {
 		return "jdbc:mysql://" + servidorBDD + "/" + BDD
 	            + "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false"
-	            + "&serverTimezone=UTC";
+	            + "&serverTimezone=Europe/Madrid";
 	}
 
 	/**

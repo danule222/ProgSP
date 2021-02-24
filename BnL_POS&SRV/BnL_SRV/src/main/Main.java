@@ -1,20 +1,18 @@
 package main;
 
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import controllers.Caja;
-import controllers.Cobrar;
 import controllers.Config;
 import controllers.Logger;
-import controllers.Login;
 import dao.JDBC;
-import models.Empleado;
+import threads.Servidor;
 
 /**
  * Clase principal del servidor.
@@ -22,17 +20,21 @@ import models.Empleado;
  */
 public class Main {
 	
+	private static ServerSocket servidor;
+    static Socket clienteConectado;
+	
 	/**
 	 * Inicializa todos los componentes
 	 * necesarios para la ejecución del
 	 * programa.
 	 */
 	private static void inicializar() {
-		Logger.log("Iniciando servidor.");
+		Logger.log("[i] Iniciando servidor.");
 		try {
 			Config.leerConfiguracion();
 			JDBC.establecerConexion();
-			Logger.log("[I] Conexión a la BDD realizada con éxito.");
+			JDBC.setAutocommit(false);
+			Logger.log("[i] Conexión a la BDD realizada con éxito.");
 		} catch (SAXException e) {
 			Logger.log("[F] Error al leer App.config.");
 		} catch (IOException e) {
@@ -47,35 +49,28 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
+		
 		inicializar();
 		
-		// Prueba Login
 		try {
-			JDBC.setAutocommit(false);
-			Empleado e = Login.login("Login;1234567890");
-			System.out.println(e.getApellidos());
-			// Prueba cobrar
-			ArrayList<String> listaCompras = new ArrayList<>();
-					// Tienda;Producto;Cantidad
-			listaCompras.add("Cobro;0;0;3");
+			servidor = new ServerSocket(Config.getPuerto());
+			Logger.log("[i] Puerto " + Config.getPuerto() + " abierto "
+					 + "con éxito.");
+		} catch (IOException e1) {
+			Logger.log("[F] No se pudo abrir el Socket del servidor.");
+		}
+		clienteConectado = null;
+		
+		while(true) {
 			try {
-				Cobrar.cobro(listaCompras, e.getDNI());
-				JDBC.commit();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				Logger.log("[A] Compra cancelada por falta de stock.");
-				JDBC.rollback();
-				Logger.log("[A] Rollback ejecutado con éxito.");
+		        clienteConectado = servidor.accept();
+		        Logger.log("[i] Se ha conectado un cliente.");
+		        clienteConectado.setSoTimeout(3600000);
+		        new Servidor(clienteConectado).start();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			// Probar caja del día
-			System.out.println("Caja del día: " 
-					+ Caja.getCajaDelDia(e.getDNI()));
-		} catch (NumberFormatException e) {
-			Logger.log("[F] Error al convertir número privado "
-					+ "a tipo entero.");
-		} catch (SQLException e) {
-			Logger.log("[A] Login incorrecto.");
-			System.out.println("Fallo login");
+	        
 		}
 		
 	}

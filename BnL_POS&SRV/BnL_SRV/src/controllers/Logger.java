@@ -8,6 +8,13 @@ import java.time.LocalDateTime;
 
 public class Logger {
 
+	/**
+	 * Guarda el aviso establecido en un archivo
+	 * en la carpeta "logs" cuyo nombre está formado
+	 * por la fecha en la que se ejecuta este método
+	 * y la extensión .txt.
+	 * @param log Aviso a guardar en el registro.
+	 */
 	public static void log(String log) {
 		FileWriter myWriter;
 		File directorio = new File("logs");
