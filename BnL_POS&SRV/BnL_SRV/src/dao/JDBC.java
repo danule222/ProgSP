@@ -24,7 +24,7 @@ public class JDBC extends AbstractDAO {
 	}
 	
 	/**
-	 * Afirma los cambios realizados en la base de datos.
+	 * Confirma los cambios realizados en la base de datos.
 	 * @throws SQLException
 	 */
 	public static void commit()

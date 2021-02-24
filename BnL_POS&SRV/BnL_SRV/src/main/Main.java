@@ -20,9 +20,6 @@ import threads.Servidor;
  */
 public class Main {
 	
-	private static ServerSocket servidor;
-    static Socket clienteConectado;
-	
 	/**
 	 * Inicializa todos los componentes
 	 * necesarios para la ejecución del
@@ -50,6 +47,9 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		ServerSocket servidor = null;
+	    Socket clienteConectado = null;
+		
 		inicializar();
 		
 		try {
@@ -59,7 +59,6 @@ public class Main {
 		} catch (IOException e1) {
 			Logger.log("[F] No se pudo abrir el Socket del servidor.");
 		}
-		clienteConectado = null;
 		
 		while(true) {
 			try {
@@ -69,6 +68,10 @@ public class Main {
 		        new Servidor(clienteConectado).start();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (NullPointerException e1) {
+				Logger.log("[F] El puerto " + Config.getPuerto() 
+						 + " ya está siendo utilizado.");
+				System.exit(1);
 			}
 	        
 		}

@@ -39,10 +39,14 @@ public class Servidor extends Thread {
 	 * @throws IOException
 	 */
 	void inicializar() throws IOException {
-		flujoEntrada = new DataInputStream(clienteConectado.getInputStream());
-		flujoSalida = new DataOutputStream(clienteConectado.getOutputStream());
-		objetoSalida = new ObjectOutputStream(clienteConectado.getOutputStream());
-		objetoEntrada = new ObjectInputStream(clienteConectado.getInputStream());
+		flujoEntrada = new DataInputStream
+				(clienteConectado.getInputStream());
+		flujoSalida = new DataOutputStream
+				(clienteConectado.getOutputStream());
+		objetoSalida = new ObjectOutputStream
+				(clienteConectado.getOutputStream());
+		objetoEntrada = new ObjectInputStream
+				(clienteConectado.getInputStream());
 	}
 
 	public void run() {
@@ -52,31 +56,53 @@ public class Servidor extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 
 		String entrada = "";
 		do {
-
 			try {
 				entrada = flujoEntrada.readUTF();
-				System.out.println(entrada);
-
-				if (entrada.contains("Login"))
-					iniciarSesion(entrada);
-				else if (entrada.contains("Cobro"))
-					cobrar();
-				else if (entrada.contains("Caja"))
-					obtenerCaja();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				try {
-					Logger.log("[E] Compra cancelada debido a la " + "falta de stock en uno de los productos.");
-					JDBC.rollback();
-					Logger.log("[i] Se ha devuelto la base de datos " + "a su estado anterior.");
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+			} catch (IOException e) {
+				Logger.log("[F] Error en la lectura del comando.");
+				break;
 			}
+			System.out.println(entrada);
+			
+			if (entrada.contains("Login"))
+				try {
+					iniciarSesion(entrada);
+				} catch (NumberFormatException e) {
+					Logger.log("[F] Se ha recibido un número privado "
+							 + "formado de manera incorrecta. Desconectando.");
+					break;
+				} catch (IOException e) {
+					Logger.log("[F] Se ha producido un problema al contactar "
+							 + "con el cliente.");
+					break;
+				} catch (SQLException e) {
+					Logger.log("[F] Ha habido un problema con la base de datos.");
+					break;
+				}
+			else if (entrada.contains("Cobro"))
+				try {
+					cobrar();
+				} catch (Exception e) {
+					try {
+						Logger.log("[E] Compra cancelada debido a la "
+								 + "falta de stock en uno de los productos.");
+						JDBC.rollback();
+						Logger.log("[i] Se ha devuelto la base de datos "
+								 + "a su estado anterior.");
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+			else if (entrada.contains("Caja"))
+				try {
+					obtenerCaja();
+				} catch (SQLException | IOException e) {
+					e.printStackTrace();
+				}
 
 		} while (!entrada.equals("Salir"));
 		Logger.log("[i] Cliente desconectado.");
@@ -84,16 +110,28 @@ public class Servidor extends Thread {
 
 	/**
 	 * Realiza el proceso de incio de sesión.
-	 * @param Mensaje recibido.
+	 * @param entrada Mensaje recibido.
+	 * @return
+	 * <ul>
+	 * <li><b>True: </b>El objeto no es null.</li>
+	 * <li><b>False: </b>El objeto es null.</li>
+	 * </ul>
 	 * @throws IOException
-	 * @throws SQLException
 	 * @throws NumberFormatException
+	 * @throws SQLException
 	 */
-	void iniciarSesion(String entrada) throws IOException, NumberFormatException, SQLException {
+	boolean iniciarSesion(String entrada)
+			throws IOException, NumberFormatException, SQLException {
 		e = Login.login(entrada);
 		objetoSalida.writeObject(e);
-		Logger.log("[i] " + e.getNombre() + " " + e.getApellidos() + " ha inciado sesión.");
-		objetoSalida.writeObject(Login.listaProductos());
+		Logger.log("[i] " + e.getNombre() 
+				 + " " + e.getApellidos()
+				 + " ha inciado sesión.");
+		
+		if (e.getNombre() == null)
+			return false;
+		else objetoSalida.writeObject(Login.listaProductos());
+		return true;
 	}
 
 	/**
@@ -101,7 +139,8 @@ public class Servidor extends Thread {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	void mandarProductos() throws IOException, SQLException {
+	void mandarProductos()
+			throws IOException, SQLException {
 		objetoSalida.writeObject(Login.listaProductos());
 	}
 

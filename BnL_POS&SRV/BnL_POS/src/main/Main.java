@@ -10,6 +10,15 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import controllers.Caja;
+import controllers.Config;
+import controllers.Login;
+import controllers.Salir;
+import controllers.Venta;
 import models.Empleado;
 import models.Producto;
 
@@ -18,21 +27,27 @@ public class Main {
 	public static Empleado e;
 
 	static Socket servidorConectado;
-	static DataInputStream flujoEntrada;
-	static DataOutputStream flujoSalida;
+	public static DataInputStream flujoEntrada;
+	public static DataOutputStream flujoSalida;
 	public static ObjectInputStream objetoEntrada;
-	static ObjectOutputStream objetoSalida;
+	public static ObjectOutputStream objetoSalida;
 
-	static Scanner sc = new Scanner(System.in);
+	public static Scanner sc = new Scanner(System.in);
 
-	static ArrayList<Producto> listaProductos = new ArrayList<>();
+	public static ArrayList<Producto> listaProductos = new ArrayList<>(); 
 
 	/**
 	 * Inicializa todos los componentes necesarios
 	 * para la ejecución del programa.
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
 	 */
-	static void inicializar() throws IOException {
-		servidorConectado = new Socket("localhost", 6000);
+	static void inicializar()
+			throws IOException, SAXException, ParserConfigurationException {
+		Config.leerConfiguracion();
+		servidorConectado = new Socket
+				(Config.getDireccionServidor(), Config.getPuertoServidor());
 		servidorConectado.setSoTimeout(10000);
 		flujoEntrada = new DataInputStream
 				(servidorConectado.getInputStream());
@@ -48,41 +63,64 @@ public class Main {
 
 		try {
 			inicializar();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			Login.login();
+		} catch (IOException e) {
+			System.out.println("No se pudo establecer conexión "
+					 		 + "con el servidor.");
+			System.exit(1);
+		} catch (ClassNotFoundException e1) {
+			System.out.println("Hubo un problema en la recepción "
+							 + "de datos.");
+			System.exit(1);
+		} catch (SAXException e) {
+			System.out.println("Hubo un problema en la lectura "
+							 + "del archivo de configuración.");
+			System.exit(1);
+		} catch (ParserConfigurationException e) {
+			System.out.println("Hubo un problema en la lectura "
+					 		 + "del archivo de configuración.");
+			System.exit(1);
 		}
 
-		iniciarSesion();
-
-		System.out.println("1. Vender | 2. Caja del día | 3. Salir");
-		
+		System.out.println("¡Bienvenido, " + e.getNombre() + "!");
 		int opcion = 0;
 		do {
+			System.out.println("\n1. Vender · 2. Caja del día · 3. Salir\n");
 			try {
+				System.out.print("Opcion: ");
 				opcion = sc.nextInt();
+				System.out.println();
 			} catch (InputMismatchException e) {
 				opcion = 0;
 			}
 
 			switch (opcion) {
+			/* Vender */
 			case 1:
 				try {
-					vender();
+					Venta.vender();
 				} catch (IOException e) {
-					e.printStackTrace();
+					System.out.println("Se ha perdido "
+							+ "conexion con el servidor.");
+					System.exit(1);
 				}
 				break;
+			/* Caja del día */
 			case 2:
 				try {
-					caja();
+					Caja.cajaDelDia();
 				} catch (IOException e) {
-					e.printStackTrace();
+					System.out.println("Se ha perdido "
+							+ "conexion con el servidor.");
+					System.exit(1);
 				}
 				break;
+			/* Salir */
 			case 3:
 				try {
-					salir();
-					System.out.println("Bye!");
+					Salir.salir();
+					System.out.print("¡Que tengas un buen día "
+								   + e.getNombre() + "!");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -93,104 +131,6 @@ public class Main {
 
 		} while (opcion != 3);
 
-	}
-
-	/**
-	 * Inicio de sesión.
-	 */
-	static void iniciarSesion() {
-		System.out.print("Introducir número privado: ");
-		try {
-			flujoSalida.writeUTF("Login;" + sc.nextInt());
-			System.out.println();
-			e = (Empleado) objetoEntrada.readObject();
-			Object lista = objetoEntrada.readObject();
-			if (lista instanceof ArrayList<?>) {
-				ArrayList<?> al = (ArrayList<?>) lista;
-				if (al.size() > 0) {
-					for (int i = 0; i < al.size(); i++) {
-						Object o = al.get(i);
-						if (o instanceof Producto) {
-							Producto s = (Producto) o;
-							listaProductos.add(s);
-						}
-					}
-				}
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Realizar compra.
-	 * @throws IOException
-	 */
-	static void vender() throws IOException {
-		ArrayList<String> listaCompra = new ArrayList<>();
-		int opcion = 0;
-		for (Producto p : listaProductos) {
-			System.out.println(p.getID() + ". " + p.getNombre());
-		}
-		do {
-			System.out.println("1. Añadir producto | 2. Lista de productos");
-			System.out.print("Opcion: ");
-			opcion = sc.nextInt();
-			System.out.println();
-			switch (opcion) {
-			
-			/* Añadir producto. */
-			case 1:
-				System.out.print("ID del producto: ");
-				int ID_Producto = sc.nextInt();
-				System.out.println();
-				System.out.print("Cantidad: ");
-				int cantidad = sc.nextInt();
-				System.out.println();
-				listaCompra.add("Cobro;" + e.getID_Tienda() + ";" 
-						+ ID_Producto + ";" + cantidad);
-				break;
-				
-			/* Imprimir lista de productos. */
-			case 2:
-				for (Producto p : listaProductos) {
-					System.out.println(p.getID() + ". " + p.getNombre());
-				}
-				break;
-				
-			/* Efectuar compra. */
-			case 3:
-				break;
-				
-			/* Cancela compra. */
-			case 4:
-				break;
-				
-			}
-		} while (opcion != 3);
-		flujoSalida.writeUTF("Cobro");
-		objetoSalida.writeObject(listaCompra);
-	}
-
-	/**
-	 * Obtener caja del día.
-	 * @throws IOException
-	 */
-	static void caja() throws IOException {
-		flujoSalida.writeUTF("Caja");
-		System.out.println("Caja de hoy: "
-						 + flujoEntrada.readDouble());
-	}
-
-	/**
-	 * Terminar conexión con el servidor
-	 * y cerrar la aplicación.
-	 * @throws IOException
-	 */
-	static void salir() throws IOException {
-		flujoSalida.writeUTF("Salir");
 	}
 
 }

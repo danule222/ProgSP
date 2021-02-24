@@ -126,8 +126,8 @@ public class ProductoDAO extends AbstractDAO {
 				   + "AND ID_Almacen = ?";
 		
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, ID_Tienda);
-		ps.setInt(2, ID_Producto);
+		ps.setInt(1, ID_Producto);
+		ps.setInt(2, getID_Almacen(ID_Tienda));
 		
 		ResultSet rs = ps.executeQuery();
 		rs.next();
