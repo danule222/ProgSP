@@ -64,10 +64,11 @@ public class Mail {
 	 * @throws MessagingException 
 	 * @throws AddressException 
 	 */
-	public static void faltaStock(String Nombre_Producto)
+	public static void faltaStock(String Nombre_Producto, Double Precio_Producto)
 			throws AddressException, MessagingException {
 		enviarCorreo(mailEmergencia, "AVISO | Sin stock de producto",
-				"Falta stock de " + Nombre_Producto);
+				"Falta stock de " + Nombre_Producto + ". Precio: "
+				+ Precio_Producto + "€.");
 	}
 
 }

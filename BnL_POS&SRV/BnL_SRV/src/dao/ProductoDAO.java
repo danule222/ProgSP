@@ -98,7 +98,8 @@ public class ProductoDAO extends AbstractDAO {
 				   + "AND ID_Almacen = ?";
 		
 		if ((getStock(ID_Tienda, ID_Producto) - cantidad) <= 0) {
-			Mail.faltaStock(getProducto(ID_Producto).getNombre());
+			Producto p = getProducto(ID_Producto);
+			Mail.faltaStock(p.getNombre(), p.getPrecio_Venta());
 			throw new Exception("Falta de Stock en el producto con el ID "
 					+ ID_Producto);
 		} else {
